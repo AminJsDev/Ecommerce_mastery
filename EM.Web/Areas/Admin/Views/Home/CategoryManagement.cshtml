@@ -1,0 +1,73 @@
+﻿
+
+@{
+    ViewData["Title"] = "CategoryManagement";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+@using EM.ViewModels.Category;
+@model IEnumerable<CategoryViewModel>;
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="pt-3 px-1">
+    <h1>مدیریت دسته بندی ها</h1>
+    <div class="card">
+        <!-- /.card-header -->
+        <div class="card-body">
+            <div id="example1_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
+                <div class="row"><div class="col-sm-12 col-md-6"><div class="dataTables_length" id="example1_length"><label>تعداد نمایش در صفحه: <select name="example1_length" aria-controls="example1" class="form-control form-control-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select></label></div></div><div class="col-sm-12 col-md-6"><div id="example1_filter" class="dataTables_filter"><label>جستجو:<input type="search" class="form-control form-control-sm" placeholder="" aria-controls="example1"></label></div></div></div><div class="row">
+                    <div class="col-sm-12">
+                        <div>
+                            <a href="admin/product/create">
+                                <button class="btn btn-success p-2 my-2">
+                                    <i class="fa fa-plus"></i>
+                                    افزودن دسته بندی جدید
+                                </button>
+                            </a>
+                        </div>
+                        <table id="example1" class="table table-bordered table-striped dataTable" role="grid">
+                            <thead>
+                                <tr role="row">
+                                    <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="نام محصول: activate to sort column descending" style="width: 117.125px;">آیدی دسته بندی</th>
+                                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="توضیحات: activate to sort column ascending" style="width: 224.359px;">نام دسته بندی</th>
+                                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="قیمت: activate to sort column ascending" style="width: 208.328px;">توضیحات دسته بندی</th>
+                                </tr>
+
+
+                            </thead>
+
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr role="row" class="odd">
+                                        <td class="sorting_1">@item.Id</td>
+                                        <td>@item.Name</td>
+                                        <td>@item.Description</td>
+                                        <td>
+                                            <span>
+                                                <button class="btn btn-danger">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </span>
+                                            <span>
+                                                <button class="btn btn-warning">
+                                                    <i class="fa fa-pencil"></i>
+                                                </button>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div><div class="row"><div class="col-sm-12 col-md-5"></div><div class="col-sm-12 col-md-7"><div class="dataTables_paginate paging_simple_numbers" id="example1_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="example1_previous"><a href="#" aria-controls="example1" data-dt-idx="0" tabindex="0" class="page-link">قبلی</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="example1" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item "><a href="#" aria-controls="example1" data-dt-idx="2" tabindex="0" class="page-link">2</a></li><li class="paginate_button page-item "><a href="#" aria-controls="example1" data-dt-idx="3" tabindex="0" class="page-link">3</a></li><li class="paginate_button page-item "><a href="#" aria-controls="example1" data-dt-idx="4" tabindex="0" class="page-link">4</a></li><li class="paginate_button page-item "><a href="#" aria-controls="example1" data-dt-idx="5" tabindex="0" class="page-link">5</a></li><li class="paginate_button page-item "><a href="#" aria-controls="example1" data-dt-idx="6" tabindex="0" class="page-link">6</a></li><li class="paginate_button page-item next" id="example1_next"><a href="#" aria-controls="example1" data-dt-idx="7" tabindex="0" class="page-link">بعدی</a></li></ul></div></div></div>
+            </div>
+        </div>
+        <!-- /.card-body -->
+    </div>
+</div>
+
