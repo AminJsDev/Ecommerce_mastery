@@ -20,12 +20,10 @@ namespace EM.Domain.Entities
         public int CategoryId { get; set; }
 
         // Navigation property for Category
-        public Category Category { get; set; } // Add this navigation property
+        public virtual Category Category { get; set; } // Add this navigation property
 
         // Navigation property for related images
-        public string ImagePath { get; set; } // Add this property
-        [NotMapped]
-        public IFormFile Image { get; set; } // Add this property
+        public string Icon { get; set; } // Add this property
         public DateTime CreatedAt { get; set; }
         public DateTime UpdateAt { get; set; }
 

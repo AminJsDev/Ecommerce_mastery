@@ -20,7 +20,7 @@ namespace EM.Web.Areas.Admin.Controllers
 
         [HttpGet]
         public async Task<IActionResult> Index()
-            // index something 
+        // index something 
         {
             var products = await _productService.GetAllProductsAsync();
 
@@ -30,7 +30,7 @@ namespace EM.Web.Areas.Admin.Controllers
                 Id = p.Id,
                 Name = p.Name,
                 Price = p.Price,
-                Image = p.ImagePath,
+                Image = p.Icon,
                 StockQuantity = p.StockQuantity,
                 Description = p.Description,
                 // Add other properties you need
@@ -38,12 +38,6 @@ namespace EM.Web.Areas.Admin.Controllers
 
             return View(productViewModels);
         }
-
-        public IActionResult Create()
-        {
-            return View();
-        }
-
 
         [HttpGet]
         public async Task<IActionResult> CategoryManagement()
@@ -60,6 +54,71 @@ namespace EM.Web.Areas.Admin.Controllers
             }).ToList();
 
             return View(categoriesViewModel);
+        }
+
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            var viewModel =  new ProductCreateViewModel
+            {
+                categories = _categoryService.GetAllCategoriesAsync()
+            };
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(Product product)
+        {
+            if (ModelState.IsValid)
+            {
+                if (product.Icon != null)
+                {
+                    // Generate a unique file name
+                    var fileName = Path.GetFileNameWithoutExtension(product.Image.FileName);
+                    var extension = Path.GetExtension(product.Image.FileName);
+                    var uniqueFileName = $"{fileName}_{Guid.NewGuid()}{extension}";
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", uniqueFileName);
+
+                    // Save the file to wwwroot/images
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await product.Icon.CopyToAsync(fileStream);
+                    }
+
+                    // Set the image path to be saved in the database
+                    product.Icon = $"/images/{uniqueFileName}";
+                }
+
+                await _productService.AddProductAsync(product);
+                return RedirectToAction("index");
+            }
+
+            return View(product);
+        }
+
+        [HttpPost("Upload/UploadFile")]
+        public async Task<IActionResult> UploadFile(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+            {
+                return Content("فایلی وجود ندارد ");
+            }
+
+            // مسیر روت پروژه
+            var rootPath = Directory.GetCurrentDirectory(); // مسیر روت پروژه
+
+            // مسیر ذخیره‌سازی فایل در روت پروژه (در کنار فایل‌های دیگر)
+            var filePath = Path.Combine(rootPath, file.FileName);
+
+            // ذخیره‌سازی فایل
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            return Content($"File {file.FileName} uploaded successfully.");
         }
 
     }
